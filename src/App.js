@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import _ from 'lodash'
 import Register from './scenes/Auth/Register'
+import Login from './scenes/Auth/Login'
 
 const Home = () => (
   <div>
@@ -13,10 +14,18 @@ const Home = () => (
   </div>
 )
 
+const authLinks = () => (
+  <ul>
+    <li><Link to="/signup">Sign Up</Link></li>
+    <li><Link to="/login">Log In</Link></li>
+  </ul>
+)
+
 class App extends Component {
   constructor(props) {
     super(props)
-    const userInfo = localStorage.getItem("user")
+    // TODO: use auth service class
+    const userInfo = localStorage.getItem("USER")
     this.state = { user: userInfo }
   }
 
@@ -25,12 +34,12 @@ class App extends Component {
       <Router>
         <div className="grid-container">
           {
-            _.isNil(this.state.user) &&
-              <Link to="/signup">Sign Up</Link>
+            _.isNil(this.state.user) && authLinks()
           }
 
           <Route exact path="/" component={Home} />
           <Route path="/signup" component={Register} />
+          <Route path="/login" component={Login} />
         </div>
       </Router>
     );
