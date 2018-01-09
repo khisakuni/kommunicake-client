@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux'
 import {
   BrowserRouter as Router,
   Route,
@@ -7,6 +8,9 @@ import {
 import _ from 'lodash'
 import Register from './scenes/Auth/Register'
 import Login from './scenes/Auth/Login'
+import configureStore from './store'
+
+
 
 const Home = () => (
   <div>
@@ -30,18 +34,23 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <Router>
-        <div className="grid-container">
-          {
-            _.isNil(this.state.user) && authLinks()
-          }
 
-          <Route exact path="/" component={Home} />
-          <Route path="/signup" component={Register} />
-          <Route path="/login" component={Login} />
-        </div>
-      </Router>
+    // TODO: only use devtools stuff if in development mode
+    const store = configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    return (
+      <Provider store={store}>
+        <Router>
+          <div className="grid-container">
+            {
+              _.isNil(this.state.user) && authLinks()
+            }
+
+            <Route exact path="/" component={Home} />
+            <Route path="/signup" component={Register} />
+            <Route path="/login" component={Login} />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
