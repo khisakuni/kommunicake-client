@@ -10,7 +10,9 @@ import Register from './scenes/Auth/Register'
 import Login from './scenes/Auth/Login'
 import configureStore from './store'
 
-
+const store = process.env.NODE_ENV === 'development' ?
+  configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
+  configureStore()
 
 const Home = () => (
   <div>
@@ -34,9 +36,7 @@ class App extends Component {
   }
 
   render() {
-
-    // TODO: only use devtools stuff if in development mode
-    const store = configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    console.log(process.env)
     return (
       <Provider store={store}>
         <Router>
