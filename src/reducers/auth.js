@@ -35,6 +35,7 @@ function loginRequest() {
 }
 
 function loginRequestSuccess(payload) {
+  console.log('payload >> ', payload)
   return { type: types.REQUEST_LOGIN_SUCCESS, payload }
 }
 
@@ -55,7 +56,7 @@ export default (state = initialState, { type, payload }) => {
     case types.REQUEST_LOGIN:
       return { ...state, loading: true }
     case types.REQUEST_LOGIN_SUCCESS:
-      return { ...state, loading: false, user: payload }
+      return { ...state, loading: false, user: payload.user, token: payload.token }
     case types.REQUEST_LOGIN_FAILURE:
       return { ...state, loaindg: false, error: payload }
     case types.SET_USER:
