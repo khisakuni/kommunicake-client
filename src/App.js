@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
-import _ from 'lodash'
 import Register from './scenes/Auth/Register'
 import Login from './scenes/Auth/Login'
+import Header from './components/Header'
 import configureStore from './store'
+import { actionCreators } from './reducers/auth'
 
 const store = process.env.NODE_ENV === 'development' ?
   configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
@@ -20,31 +20,23 @@ const Home = () => (
   </div>
 )
 
-const authLinks = () => (
-  <ul>
-    <li><Link to="/signup">Sign Up</Link></li>
-    <li><Link to="/login">Log In</Link></li>
-  </ul>
-)
-
 class App extends Component {
   constructor(props) {
     super(props)
-    // TODO: use auth service class
-    const userInfo = localStorage.getItem("USER")
-    this.state = { user: userInfo }
+
+    const user = localStorage.getItem('USER')
+    if (user) {
+      store.dispatch(actionCreators.setUser({ ...JSON.parse(user) }))
+      store.dispatch(actionCreators.setToken(localStorage.getItem('TOKEN')))
+    }
   }
 
   render() {
-    console.log(process.env)
     return (
       <Provider store={store}>
         <Router>
           <div className="grid-container">
-            {
-              _.isNil(this.state.user) && authLinks()
-            }
-
+            <Header />
             <Route exact path="/" component={Home} />
             <Route path="/signup" component={Register} />
             <Route path="/login" component={Login} />
