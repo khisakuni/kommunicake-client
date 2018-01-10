@@ -9,6 +9,7 @@ import Login from './scenes/Auth/Login'
 import Header from './components/Header'
 import configureStore from './store'
 import { actionCreators } from './reducers/auth'
+import { userIsLoggedIn, getToken, getUser } from './services/auth'
 
 const store = process.env.NODE_ENV === 'development' ?
   configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
@@ -24,10 +25,9 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    const user = localStorage.getItem('USER')
-    if (user) {
-      store.dispatch(actionCreators.setUser({ ...JSON.parse(user) }))
-      store.dispatch(actionCreators.setToken(localStorage.getItem('TOKEN')))
+    if (userIsLoggedIn()) {
+      store.dispatch(actionCreators.setUser(getUser()))
+      store.dispatch(actionCreators.setToken(getToken()))
     }
   }
 
