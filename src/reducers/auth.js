@@ -57,7 +57,7 @@ export default (state = initialState, { type, payload }) => {
     case types.REQUEST_LOGIN_SUCCESS:
       return { ...state, loading: false, user: payload.user, token: payload.token }
     case types.REQUEST_LOGIN_FAILURE:
-      return { ...state, loaindg: false, error: payload }
+      return { ...state, loading: false, error: payload }
     case types.SET_USER:
       return { ...state, user: payload }
     case types.SET_TOKEN:
