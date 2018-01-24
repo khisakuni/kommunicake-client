@@ -31,22 +31,22 @@ const handleResponse = (res) => {
 
 export const get = (url) => {
   const req = formatRequest(url, { method: methods.GET })
-  return fetch(req).then(handleResponse)
+  return fetch(url, req).then(handleResponse)
 }
 
 export const post = (url, { body } = {}) => {
   const req = formatRequest(url, { method: methods.POST, body })
-  return fetch(req).then(handleResponse)
+  return fetch(url, req).then(handleResponse)
 }
 
 export const put = (url, { body }) => {
   const req = formatRequest(url, { method: methods.PUT, body })
-  return fetch(req).then(handleResponse)
+  return fetch(url, req).then(handleResponse)
 }
 
 export const destroy = (url) => {
   const req = formatRequest(url, { method: methods.DELETE })
-  return fetch(req).then(handleResponse)
+  return fetch(url, req).then(handleResponse)
 }
 
 export default {

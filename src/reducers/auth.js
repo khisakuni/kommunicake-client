@@ -35,7 +35,6 @@ function loginRequest() {
 }
 
 function loginRequestSuccess(payload) {
-  console.log('payload >> ', payload)
   return { type: types.REQUEST_LOGIN_SUCCESS, payload }
 }
 
@@ -44,7 +43,7 @@ function loginRequestFailure(payload) {
 }
 
 // Reducer
-const initialState = {
+export const initialState = {
   loading: false,
   error: null,
   user: {},
