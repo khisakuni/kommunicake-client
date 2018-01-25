@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import Register from './scenes/Auth/Register'
 import Login from './scenes/Auth/Login'
+import MessageProviders from './scenes/MessageProviders'
 import Header from './components/Header'
 import ProtectedRoute from './components/ProtectedRoute'
 import configureStore from './store'
@@ -42,7 +43,7 @@ class App extends Component {
             <Route path="/signup" component={Register} />
             <Route path="/login" component={Login} />
 
-            <ProtectedRoute path="/message-providers" component={Home} authenticated={userIsLoggedIn()} />
+            <ProtectedRoute path="/message-providers" component={MessageProviders} authenticated={userIsLoggedIn()} />
           </div>
         </Router>
       </Provider>
