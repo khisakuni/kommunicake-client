@@ -7,6 +7,7 @@ import {
 import Register from './scenes/Auth/Register'
 import Login from './scenes/Auth/Login'
 import Header from './components/Header'
+import ProtectedRoute from './components/ProtectedRoute'
 import configureStore from './store'
 import { actionCreators } from './reducers/auth'
 import { userIsLoggedIn, getToken, getUser } from './services/auth'
@@ -40,6 +41,8 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/signup" component={Register} />
             <Route path="/login" component={Login} />
+
+            <ProtectedRoute path="/message-providers" component={Home} authenticated={userIsLoggedIn()} />
           </div>
         </Router>
       </Provider>

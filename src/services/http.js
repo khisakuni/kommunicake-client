@@ -1,5 +1,5 @@
 const formatRequest = (url, { method, body } = { body: {} }) => {
-  const params = {
+  return {
     method: method,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
@@ -9,7 +9,6 @@ const formatRequest = (url, { method, body } = { body: {} }) => {
     },
     body: JSON.stringify(body)
   }
-  return new Request(url, params)
 }
 
 const methods = {
