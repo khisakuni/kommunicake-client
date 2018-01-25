@@ -1,11 +1,12 @@
-const formatRequest = (url, { method, body } = { body: {} }) => {
+const formatRequest = (url, { method, body, headers } = { body: {}, headers: {} }) => {
   return {
     method: method,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Origin': 'http://foo.com'
+      'Origin': 'http://foo.com',
+      ...headers,
     },
     body: JSON.stringify(body)
   }
@@ -28,8 +29,8 @@ const handleResponse = (res) => {
   })
 }
 
-export const get = (url) => {
-  const req = formatRequest(url, { method: methods.GET })
+export const get = (url, headers = {}) => {
+  const req = formatRequest(url, { method: methods.GET, headers })
   return fetch(url, req).then(handleResponse)
 }
 
@@ -48,9 +49,17 @@ export const destroy = (url) => {
   return fetch(url, req).then(handleResponse)
 }
 
+export const authenticated = (requestFn) => (
+  (url) => {
+    const token = localStorage.getItem('TOKEN')
+    return requestFn(url, { headers: { 'Authorization': `Bearer ${token}` } })
+  }
+)
+
 export default {
-  get: get,
-  post: post,
-  put: put,
-  destroy: destroy
+  get,
+  post,
+  put,
+  destroy,
+  authenticated
 }
