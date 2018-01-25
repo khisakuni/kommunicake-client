@@ -23,6 +23,11 @@ export const getToken = () => {
   return localStorage.getItem(keys.TOKEN)
 }
 
+export const getUser = () => {
+  const user = localStorage.getItem(keys.USER)
+  return user ? JSON.parse(user) : user 
+}
+
 export default {
   login,
   logout

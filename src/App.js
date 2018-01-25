@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
-import _ from 'lodash'
 import Register from './scenes/Auth/Register'
+import Login from './scenes/Auth/Login'
+import Header from './components/Header'
+import configureStore from './store'
+import { actionCreators } from './reducers/auth'
+import { userIsLoggedIn, getToken, getUser } from './services/auth'
+
+const store = process.env.NODE_ENV === 'development' ?
+  configureStore(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
+  configureStore()
 
 const Home = () => (
   <div>
@@ -16,23 +24,25 @@ const Home = () => (
 class App extends Component {
   constructor(props) {
     super(props)
-    const userInfo = localStorage.getItem("user")
-    this.state = { user: userInfo }
+
+    if (userIsLoggedIn()) {
+      store.dispatch(actionCreators.setUser(getUser()))
+      store.dispatch(actionCreators.setToken(getToken()))
+    }
   }
 
   render() {
     return (
-      <Router>
-        <div className="grid-container">
-          {
-            _.isNil(this.state.user) &&
-              <Link to="/signup">Sign Up</Link>
-          }
-
-          <Route exact path="/" component={Home} />
-          <Route path="/signup" component={Register} />
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <div className="grid-container">
+            <Header />
+            <Route exact path="/" component={Home} />
+            <Route path="/signup" component={Register} />
+            <Route path="/login" component={Login} />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
