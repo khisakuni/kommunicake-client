@@ -8,6 +8,7 @@ export default class Header extends Component {
 
     this.isLoggedIn = this.isLoggedIn.bind(this)
   }
+
   isLoggedIn() {
     const { user, token } = this.props
     return !_.isNil(user) && !_.isNil(token)
@@ -16,6 +17,7 @@ export default class Header extends Component {
   render() {
     return (
       <ul>
+        <h1>hello</h1>
         {!this.isLoggedIn() && (<li><Link to="/signup">Sign Up</Link></li>)}
         {!this.isLoggedIn() && (<li><Link to="/login">Log In</Link></li>)}
       </ul>
