@@ -1,3 +1,4 @@
+import * as api from '../services/api/message-providers'
 export const types = {
   REQUEST_MESSAGE_PROVIDERS: 'REQUEST_MESSAGE_PROVIDERS',
   REQUEST_MESSAGE_PROVIDERS_SUCCESS: 'REQUEST_MESSAGE_PROVIDERS_SUCCESS',
@@ -5,7 +6,33 @@ export const types = {
 }
 
 export const actionCreators = {
+  getMessageProviders,
+  getMessageProvidersRequest,
+  getMessageProvidersSuccess,
+  getMessageProvidersFailure,
+}
 
+function getMessageProviders() {
+  return (dispatch) => {
+    dispatch(getMessageProvidersRequest())
+    return api.getMessageProviders()
+      .then(
+        response => dispatch(getMessageProvidersSuccess(response.messageProviders)),
+        errorResponse => dispatch(getMessageProvidersFailure(errorResponse.body.message))
+      )
+  }
+}
+
+function getMessageProvidersRequest() {
+  return { type: types.REQUEST_MESSAGE_PROVIDERS }
+}
+
+function getMessageProvidersSuccess(payload) {
+  return { type: types.REQUEST_MESSAGE_PROVIDERS_SUCCESS, payload }
+}
+
+function getMessageProvidersFailure(payload) {
+  return { type: types.REQUEST_MESSAGE_PROVIDERS_FAILURE, payload }
 }
 
 export const initialState = {

@@ -2,10 +2,84 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import reducer, { actionCreators, types, initialState } from './message-providers'
+import { mockLocalStorage } from '../test-helpers'
 
 describe('message-providers', () => {
   describe('actionCreators', () => {
-    it('passes')
+    describe('getMessageProviders', () => {
+      beforeEach(() => {
+        mockLocalStorage()
+      })
+
+      afterEach(() => {
+        fetchMock.reset()
+        fetchMock.restore()
+      })
+
+      const middlewares = [thunk]
+      const mockStore = configureMockStore(middlewares)
+      const url = `${process.env.REACT_APP_API_DOMAIN}/api/v1/message-providers`
+
+      it('creates REQUEST_MESSAGE_PROVIDERS_SUCCESS when done successfully', () => {
+        const body = { messageProviders: [{ messageProviderType: 'GMAIL'}] }
+        fetchMock.getOnce(url, { body, headers: { 'content-type': 'application/json' } })
+        const expectedActions = [
+          actionCreators.getMessageProvidersRequest(),
+          actionCreators.getMessageProvidersSuccess(body.messageProviders),
+        ]
+        const store = mockStore(initialState)
+
+        return store.dispatch(actionCreators.getMessageProviders()).then(() => {
+          expect(store.getActions()).toEqual(expectedActions)
+        })
+      })
+
+      it('creates REQUEST_MESSAGE_PROVIDERS_FAILURE wehn done with error', () => {
+        const body = { message: 'an error occurred' }
+        fetchMock.getOnce(url, {
+          body,
+          headers: { 'content-type': 'application/json' },
+          status: 500,
+        })
+        const expectedActions = [
+          actionCreators.getMessageProvidersRequest(),
+          actionCreators.getMessageProvidersFailure(body.message)
+        ]
+        const store = mockStore(initialState)
+
+        return store.dispatch(actionCreators.getMessageProviders()).then(() => {
+          expect(store.getActions()).toEqual(expectedActions)
+        })
+      })
+    })
+
+    describe('getMessageProvidersRequest', () => {
+      it('creates REQUEST_MESSAGE_PROVIDERS type', () => {
+        expect(actionCreators.getMessageProvidersRequest()).toEqual({
+          type: types.REQUEST_MESSAGE_PROVIDERS,
+        })
+      })
+    })
+
+    describe('getMessageProvidersSuccess', () => {
+      it('creates REQUEST_MESSAGE_PROVIDERS_SUCCESS type', () => {
+        const payload = 'payload'
+
+        expect(actionCreators.getMessageProvidersSuccess(payload)).toEqual({
+          type: types.REQUEST_MESSAGE_PROVIDERS_SUCCESS,
+          payload,
+        })
+      })
+    })
+
+    describe('getMessageProvidersFailure', () => {
+      const error = 'an error occurred'
+
+      expect(actionCreators.getMessageProvidersFailure(error)).toEqual({
+        type: types.REQUEST_MESSAGE_PROVIDERS_FAILURE,
+        payload: error,
+      })
+    })
   })
 
   describe('reducer', () => {
