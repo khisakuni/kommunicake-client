@@ -34,8 +34,8 @@ export const get = (url, { headers } = { headers: {} }) => {
   return fetch(url, req).then(handleResponse)
 }
 
-export const post = (url, { body } = {}) => {
-  const req = formatRequest(url, { method: methods.POST, body })
+export const post = (url, { body, headers } = {}) => {
+  const req = formatRequest(url, { method: methods.POST, body, headers })
   return fetch(url, req).then(handleResponse)
 }
 
@@ -50,9 +50,9 @@ export const destroy = (url) => {
 }
 
 export const authenticated = (requestFn) => (
-  (url) => {
+  (url, { body } = { body: {} }) => {
     const token = localStorage.getItem('TOKEN')
-    return requestFn(url, { headers: { 'Authorization': `Bearer ${token}` } })
+    return requestFn(url, { headers: { 'Authorization': `Bearer ${token}` }, body })
   }
 )
 
