@@ -17,9 +17,10 @@ function getMessageProviders() {
     dispatch(getMessageProvidersRequest())
     return api.getMessageProviders()
       .then(
-        response => dispatch(getMessageProvidersSuccess(response.messageProviders)),
+        response => dispatch(getMessageProvidersSuccess(response)),
         errorResponse => dispatch(getMessageProvidersFailure(errorResponse.body.message))
       )
+
   }
 }
 
@@ -38,7 +39,7 @@ function getMessageProvidersFailure(payload) {
 export const initialState = {
   loading: false,
   error: null,
-  messageProviders: [],
+  list: [],
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -46,7 +47,7 @@ export default (state = initialState, { type, payload }) => {
     case types.REQUEST_MESSAGE_PROVIDERS:
       return { ...state, loading: true }
     case types.REQUEST_MESSAGE_PROVIDERS_SUCCESS:
-      return { ...state, loading: false, messageProviders: payload }
+      return { ...state, loading: false, list: payload }
     case types.REQUEST_MESSAGE_PROVIDERS_FAILURE:
       return { ...state, loading: false, error: payload }
     default:

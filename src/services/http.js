@@ -29,7 +29,7 @@ const handleResponse = (res) => {
   })
 }
 
-export const get = (url, headers = {}) => {
+export const get = (url, { headers } = { headers: {} }) => {
   const req = formatRequest(url, { method: methods.GET, headers })
   return fetch(url, req).then(handleResponse)
 }

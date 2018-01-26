@@ -4,6 +4,10 @@ import NewMessageProviderItem from './NewMessageProviderItem'
 
 
 class MessageProvidersList extends Component {
+  componentDidMount() {
+    this.props.getMessageProviders()
+  }
+
   render() {
     return (
       <ul>

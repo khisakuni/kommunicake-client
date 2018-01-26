@@ -18,14 +18,14 @@ describe('message-providers', () => {
 
       const middlewares = [thunk]
       const mockStore = configureMockStore(middlewares)
-      const url = `${process.env.REACT_APP_API_DOMAIN}/api/v1/message-providers`
+      const url = `${process.env.REACT_APP_API_DOMAIN}/api/v1/message_providers`
 
       it('creates REQUEST_MESSAGE_PROVIDERS_SUCCESS when done successfully', () => {
-        const body = { messageProviders: [{ messageProviderType: 'GMAIL'}] }
+        const body = [{ messageProviderType: 'GMAIL'}]
         fetchMock.getOnce(url, { body, headers: { 'content-type': 'application/json' } })
         const expectedActions = [
           actionCreators.getMessageProvidersRequest(),
-          actionCreators.getMessageProvidersSuccess(body.messageProviders),
+          actionCreators.getMessageProvidersSuccess(body),
         ]
         const store = mockStore(initialState)
 
@@ -95,7 +95,7 @@ describe('message-providers', () => {
 
       expect(reducer(initialState, { type: types.REQUEST_MESSAGE_PROVIDERS_SUCCESS, payload })).toEqual({
         ...initialState,
-        messageProviders: payload,
+        list: payload,
       })
     })
 
