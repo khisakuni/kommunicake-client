@@ -23,7 +23,7 @@ export default class NewMessageProviderItem extends Component {
   onSelectChange(event) {
     this.setState({ ...this.state, loadingConnectButton: true })
     messageProviderOptions[event.target.value]()
-      .then(({ RedirectURL }) => this.setState({ ...this.state, url: RedirectURL }))
+      .then(({ redirectURL }) => this.setState({ ...this.state, url: redirectURL }))
       .then(() => {
         this.setState({ ...this.state, loadingConnectButton: false })
       })
