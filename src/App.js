@@ -43,7 +43,7 @@ class App extends Component {
             <Route path="/signup" component={Register} />
             <Route path="/login" component={Login} />
 
-            <ProtectedRoute path="/message-providers" component={MessageProviders} authenticated={userIsLoggedIn()} />
+            <ProtectedRoute path="/message-providers" component={MessageProviders} />
           </div>
         </Router>
       </Provider>
