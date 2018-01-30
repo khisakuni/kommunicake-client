@@ -8,12 +8,20 @@ export const getMessageProviders = () => {
 }
 
 export const postGmailLoginLink = () => {
-  const url = `${domain}/api/v1/gmail_login`
+  return loginLink(`${domain}/api/v1/gmail_login`)
+}
+
+export const postSlackLoginLink = () => {
+  return loginLink(`${domain}/api/v1/slack_login`)
+}
+
+function loginLink(url) {
   const redirectURL = `${process.env.REACT_APP_DOMAIN}/message-providers`
   const body = { redirectURL }
   return authenticated(post)(url, { body })
 }
 
 export default {
-  getMessageProviders
+  getMessageProviders,
+  postSlackLoginLink,
 }

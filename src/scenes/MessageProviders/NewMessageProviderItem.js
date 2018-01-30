@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { postGmailLoginLink } from '../../services/api/message-providers'
+import { postGmailLoginLink, postSlackLoginLink } from '../../services/api/message-providers'
 
 const messageProviderOptions = {
   'Gmail': postGmailLoginLink,
+  'Slack': postSlackLoginLink,
 }
 
 export default class NewMessageProviderItem extends Component {
